@@ -126,7 +126,7 @@ func ClearAll() {
 }
 
 // defaultBufferSize indicates the amount that can be cached in a logger
-const defaultBufferSize = 500
+const defaultBufferSize = 100000
 
 func GetOrCreateLogger(output string, roller *Roller) (*Logger, error) {
 	if lg, ok := loggers.Load(output); ok {
@@ -289,6 +289,7 @@ var ErrChanFull = errors.New("channel is full")
 // or call LogBuffer.Count(1) N-1 times.
 // If the N is 1, LogBuffer.Count should not be called.
 func (l *Logger) Print(buf LogBuffer, discard bool) error {
+	discard = false
 	if l.disable {
 		// free the buf
 		PutLogBuffer(buf)
